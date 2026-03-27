@@ -12,6 +12,7 @@ This will start a web server running on port 8000. You can access the web app by
 Within the web app, you can perform the following tasks:
 
 - Upload samples for classification
-- Submit samples for classification and view results
-- Submit samples for filtering and view results
+- Submit samples for classification and viewing of results
+  - MLST typing is not yet implemented!
+- Submit samples for filtering and viewing of results
 - Manage models
