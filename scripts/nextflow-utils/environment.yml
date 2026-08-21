@@ -5,4 +5,4 @@ dependencies:
   - python=3.12
   - pip
   - pip:
-      - XspecT==0.7.2
+      - XspecT==0.7.5
