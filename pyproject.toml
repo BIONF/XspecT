@@ -57,4 +57,4 @@ pythonpath = [
 
 [project.optional-dependencies]
 docs = ["mkdocs-material", "mkdocs-include-markdown-plugin"]
-test = ["pytest", "pytest-cov", "pytest-retry", "httpx"]
+test = ["pytest", "pytest-cov", "pytest-retry", "httpx2"]

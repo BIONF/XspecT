@@ -88,7 +88,7 @@ class ProbabilisticSingleFilterModel(ProbabilisticFilterModel):
         self.bf = Bloom(num_kmers, self.fpr, hash_func=xxh3_64_intdigest)
         for record in get_record_iterator(file_path):
             for kmer in self._generate_kmers(record.seq):
-                self.bf.add(kmer)
+                self.bf.add(kmer.encode())
         self.display_names[file_path.stem] = display_name
 
         bloom_path = self.base_path / self.slug() / "filter.bloom"
@@ -120,7 +120,9 @@ class ProbabilisticSingleFilterModel(ProbabilisticFilterModel):
             raise ValueError("Invalid sequence, must be longer than k")
 
         num_hits = sum(
-            1 for kmer in self._generate_kmers(sequence, step=step) if kmer in self.bf
+            1
+            for kmer in self._generate_kmers(sequence, step=step)
+            if kmer.encode() in self.bf
         )
         return {next(iter(self.display_names)): num_hits}
 
