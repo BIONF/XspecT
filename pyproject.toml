@@ -6,22 +6,22 @@ readme = {file = "README.md", content-type = "text/markdown"}
 license = {file = "LICENSE"}
 requires-python = ">=3.10,<3.14"
 dependencies = [
-  "biopython",
-  "requests",
-  "scikit-learn",
-  "Bio",
-  "loguru",
-  "click",
-  "python-slugify",
-  "cobs-reloaded",
-  "rbloom",
-  "xxhash",
-  "fastapi",
-  "uvicorn",
-  "python-multipart",
-  "mappy",
-  "pysam",
-  "numpy"
+  "biopython==1.88",
+  "requests==2.34.2",
+  "scikit-learn==1.9.0",
+  "Bio==1.8.3",
+  "loguru==0.7.3",
+  "click==8.4.2",
+  "python-slugify==8.0.4",
+  "cobs-reloaded==0.1.1",
+  "rbloom==1.5.4",
+  "xxhash==4.0.1",
+  "fastapi==0.141.1",
+  "uvicorn==0.52.4",
+  "python-multipart==0.0.32",
+  "mappy==2.31",
+  "pysam==0.24.0",
+  "numpy==2.5.2"
   ]
 classifiers = [
   "Intended Audience :: Developers",
