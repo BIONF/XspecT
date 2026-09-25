@@ -135,10 +135,12 @@ class NCBIHandler:
 
     def get_species(self, genus_id: int) -> list[int]:
         """
-        Get the species for a given genus id.
+        Get species ids for a given genus id.
 
         This function makes a request to the NCBI Datasets API to get the species for a given genus id.
-        It returns a list of species taxonomy ids.
+        Children with the rank "SPECIES_GROUP" (e.g. species complexes) are traversed recursively,
+        so that the species classified below them are included as well.
+        Only taxa with the rank "SPECIES" are returned.
 
         Args:
             genus_id (int): The genus id to get the species for.
@@ -146,14 +148,34 @@ class NCBIHandler:
         Returns:
             list[int]: A list containing the species taxnomy ids.
         """
-        endpoint = f"/taxonomy/taxon/{genus_id}/filtered_subtree"
-        response = self._make_request(endpoint)
-
         try:
-            species_ids = response["edges"][str(genus_id)]["visible_children"]
+            return self._get_species_in_subtree(genus_id)
         except (IndexError, KeyError, TypeError) as e:
             raise ValueError(f"Invalid genus id: {genus_id}") from e
-        return species_ids
+
+    def _get_species_in_subtree(self, taxon_id: int) -> list[int]:
+        """
+        Get the species ids in the subtree of a given taxon id.
+
+        Species groups are traversed recursively. Children with other ranks are ignored.
+
+        Args:
+            taxon_id (int): The taxon id whose subtree should be searched.
+
+        Returns:
+            list[int]: A list containing the species taxonomy ids.
+        """
+        endpoint = f"/taxonomy/taxon/{taxon_id}/filtered_subtree"
+        edges = self._make_request(endpoint)["edges"]
+
+        species_ids = []
+        for child_id in edges[str(taxon_id)]["visible_children"]:
+            rank = edges.get(str(child_id), {}).get("rank")
+            if rank == "SPECIES":
+                species_ids.append(child_id)
+            elif rank == "SPECIES_GROUP":
+                species_ids.extend(self._get_species_in_subtree(child_id))
+        return list(dict.fromkeys(species_ids))
 
     def get_taxon_names(self, taxon_ids: list[int]) -> dict[int, str]:
         """

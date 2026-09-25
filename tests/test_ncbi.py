@@ -51,6 +51,8 @@ def test_get_species(ncbi_handler):
     assert isinstance(species_ids, list)
     assert len(species_ids) > 0
     assert 40216 in species_ids  # radioresistens
+    assert 470 in species_ids  # baumannii, part of the calcoaceticus/baumannii complex
+    assert 909768 not in species_ids  # calcoaceticus/baumannii complex (species group)
 
 
 def test_get_taxon_names(ncbi_handler):
